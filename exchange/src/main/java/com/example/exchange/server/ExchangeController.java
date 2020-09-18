@@ -32,16 +32,21 @@ public class ExchangeController {
 		this.client = client;
 	}
 	
+	private String parameterMessage(String value)
+	{
+		return String.format("Parameter %s cannot be empty!", value);
+	}
+	
 	@GetMapping("/exchange")
 	public Exchange status(@RequestParam(required=false) String base, @RequestParam(required=false) String exchangeString)
 	{
 		if(base == null)
 		{
-			throw new ApiRequestException("Parameter base cannot be empty!");
+			throw new ApiRequestException(parameterMessage("base"));
 		}
 		if(exchangeString == null)
 		{
-			throw new ApiRequestException("Parameter exchangeString cannot be empty!");
+			throw new ApiRequestException(parameterMessage("exchangeString"));
 		}
 		
 		CurrencyPair pair;
@@ -58,9 +63,28 @@ public class ExchangeController {
 	}
 	
 	@GetMapping("/exchange/convert")
-	public ConversionResponse statusConvert(@RequestParam Double amount, @RequestParam String base, @RequestParam String exchangeString)
+	public ConversionResponse statusConvert(@RequestParam(required=false) Double amount, @RequestParam(required=false) String base, @RequestParam(required=false) String exchangeString)
 	{
-		CurrencyPair pair = client.findCurrencyPair(base, exchangeString);
+		if(amount == null)
+		{
+			throw new ApiRequestException(parameterMessage("amount"));
+		}
+		if(base == null)
+		{
+			throw new ApiRequestException(parameterMessage("base"));
+		}
+		if(exchangeString == null)
+		{
+			throw new ApiRequestException(parameterMessage("exchangeString"));
+		}
+		
+		CurrencyPair pair;
+		try {
+			pair = client.findCurrencyPair(base, exchangeString);
+		} catch(Exception e) {
+			throw new ApiRequestException(e.getMessage());
+		}
+		
 		Exchange exchange = new Exchange();
 		exchange.setExchangeRate(pair.getRate().getRate() * amount);
 		Conversion conversion = new Conversion(new Date(), base, exchangeString, exchange.getExchangeRate());
