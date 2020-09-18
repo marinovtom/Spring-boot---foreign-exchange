@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.exchange.exception.ApiRequestException;
 import com.example.exchange.model.Conversion;
 import com.example.exchange.model.ConversionResponse;
 import com.example.exchange.model.CurrencyPair;
@@ -34,15 +35,22 @@ public class ExchangeController {
 	@GetMapping("/exchange")
 	public Exchange status(@RequestParam(required=false) String base, @RequestParam(required=false) String exchangeString)
 	{
-		//if(one == null) throw new ApiRequestException("Parameter one cannot be empty!");
-		//if(two == null) throw new ApiRequestException("Parameter two cannot be empty!");
+		if(base == null)
+		{
+			throw new ApiRequestException("Parameter base cannot be empty!");
+		}
+		if(exchangeString == null)
+		{
+			throw new ApiRequestException("Parameter exchangeString cannot be empty!");
+		}
+		
 		CurrencyPair pair;
-		//try {
+		try {
 			pair = client.findCurrencyPair(base, exchangeString);
-		//} catch(Exception e)
-		//{
-		//	throw new ApiRequestException(e.getMessage());
-		//}
+		} catch(Exception e)
+		{
+			throw new ApiRequestException(e.getMessage());
+		}
 		Exchange exchange = new Exchange();
 		exchange.setExchangeRate(pair.getRate().getRate());
 		
