@@ -18,6 +18,7 @@ import org.springframework.web.util.NestedServletException;
 import static org.hamcrest.Matchers.containsString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Date;
@@ -69,16 +70,16 @@ public class ExchangeControllerTest {
 	@Test
 	public void convertParams() throws Exception
 	{
-		this.mockMvc.perform(get("/exchange/convert")).andExpect(status().isBadRequest())
+		this.mockMvc.perform(post("/exchange/convert")).andExpect(status().isBadRequest())
 					.andExpect(content().string(containsString("(amount, base, exchangeString)!")));
 		
-		this.mockMvc.perform(get("/exchange/convert?base=USD")).andExpect(status().isBadRequest())
+		this.mockMvc.perform(post("/exchange/convert?base=USD")).andExpect(status().isBadRequest())
 					.andExpect(content().string(containsString("Parameter amount cannot be empty!")));
 		
-		this.mockMvc.perform(get("/exchange/convert?amount=100")).andExpect(status().isBadRequest())
+		this.mockMvc.perform(post("/exchange/convert?amount=100")).andExpect(status().isBadRequest())
 					.andExpect(content().string(containsString("Parameter base cannot be empty!")));
 		
-		this.mockMvc.perform(get("/exchange/convert?amount=100&base=USD")).andExpect(status().isBadRequest())
+		this.mockMvc.perform(post("/exchange/convert?amount=100&base=USD")).andExpect(status().isBadRequest())
 		.andExpect(content().string(containsString("Parameter exchangeString cannot be empty!")));
 	}
 }

@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,7 +69,7 @@ public class ExchangeController {
 		return exchange;
 	}
 	
-	@GetMapping("/exchange/convert")
+	@PostMapping("/exchange/convert")
 	public ConversionResponse statusConvert(@RequestParam(required=false) Double amount, @RequestParam(required=false) String base, @RequestParam(required=false) String exchangeString)
 	{
 		if(amount == null && base == null && exchangeString == null)
@@ -97,8 +98,8 @@ public class ExchangeController {
 		
 		Exchange exchange = new Exchange();
 		exchange.setExchangeRate(pair.getRate().getRate() * amount);
+		
 		Conversion conversion = new Conversion(new Date(), base, exchangeString, exchange.getExchangeRate());
-		//long v = ThreadLocalRandom.current().nextLong(1400000000);
 		String uniqueID = UUID.randomUUID().toString();
 		conversion.setTransactionId(uniqueID);
 		
