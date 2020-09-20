@@ -11,6 +11,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -20,8 +23,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Conversion {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long transactionId;
+	@Generated(GenerationTime.INSERT)
+	//@GeneratedValue(strategy=GenerationType.AUTO)
+	private String transactionId;
 	
 	@Temporal(TemporalType.DATE)
 	private Date transactionDate;
@@ -39,11 +43,11 @@ public class Conversion {
 		this.targetAmount = targetAmount;
 	}
 
-	public Long getTransactionId() {
+	public String getTransactionId() {
 		return transactionId;
 	}
 
-	public void setTransactionId(Long transactionId) {
+	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
 

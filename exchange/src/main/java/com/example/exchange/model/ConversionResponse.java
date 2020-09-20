@@ -8,19 +8,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ConversionResponse {
 
-	private Long transactionId;
+	private String transactionId;
 	private Double targetAmount;
 	
-	public ConversionResponse(Long id, Double amount)
+	public ConversionResponse(String id, Double amount)
 	{
 		this.transactionId = id;
 		this.targetAmount = amount;
 	}
 	
-	public Long getTransactionId() {
+	public String getTransactionId() {
 		return transactionId;
 	}
-	public void setTransactionId(Long transactionId) {
+	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
 	public Double getTargetAmount() {

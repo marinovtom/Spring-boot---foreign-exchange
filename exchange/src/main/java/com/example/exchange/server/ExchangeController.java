@@ -1,6 +1,8 @@
 package com.example.exchange.server;
 
 import java.util.Date;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +42,10 @@ public class ExchangeController {
 	@GetMapping("/exchange")
 	public Exchange status(@RequestParam(required=false) String base, @RequestParam(required=false) String exchangeString)
 	{
+		if(base == null && exchangeString == null)
+		{
+			throw new ApiRequestException("/exchange must have 2 parameters (base, exchangeString)!");
+		}
 		if(base == null)
 		{
 			throw new ApiRequestException(parameterMessage("base"));
@@ -65,6 +71,10 @@ public class ExchangeController {
 	@GetMapping("/exchange/convert")
 	public ConversionResponse statusConvert(@RequestParam(required=false) Double amount, @RequestParam(required=false) String base, @RequestParam(required=false) String exchangeString)
 	{
+		if(amount == null && base == null && exchangeString == null)
+		{
+			throw new ApiRequestException("/exchange must have 3 parameters (amount, base, exchangeString)!");
+		}
 		if(amount == null)
 		{
 			throw new ApiRequestException(parameterMessage("amount"));
@@ -88,6 +98,9 @@ public class ExchangeController {
 		Exchange exchange = new Exchange();
 		exchange.setExchangeRate(pair.getRate().getRate() * amount);
 		Conversion conversion = new Conversion(new Date(), base, exchangeString, exchange.getExchangeRate());
+		//long v = ThreadLocalRandom.current().nextLong(1400000000);
+		String uniqueID = UUID.randomUUID().toString();
+		conversion.setTransactionId(uniqueID);
 		
 		repository.save(conversion);
 		

@@ -9,8 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import com.example.exchange.model.Conversion;
 
+@Repository
 public interface ConversionRepository extends PagingAndSortingRepository<Conversion, Long> {
-	Conversion findById(long id);
+	Conversion findByTransactionId(String transactionId);
 	
 	Page<Conversion> findByTransactionDate(Date transactionDate, Pageable pageable);
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.exchange.exception.ApiRequestException;
 import com.example.exchange.model.Conversion;
 import com.example.exchange.repo.ConversionRepository;
-import com.sun.el.parser.ParseException;
 
 @RestController
 public class ListController {
@@ -26,22 +25,21 @@ public class ListController {
 	private ConversionRepository repository;
 	
 	@GetMapping("/exchange/list")
-	public List<Conversion> getConversionListFor(@RequestParam(required=false) Long id, @RequestParam(required=false) String date, @RequestParam(required=false, defaultValue="0") int pageNo) throws java.text.ParseException
+	public List<Conversion> getConversionListFor(@RequestParam(required=false) String id, @RequestParam(required=false) String date, @RequestParam(required=false, defaultValue="0") int pageNo, @RequestParam(required=false, defaultValue="2") int pageSize) throws java.text.ParseException
 	{
-		Pageable pageWithTwoElements = PageRequest.of(pageNo, 2); // pageSize = 2 for easier test
+		Pageable pageWithTwoElements = PageRequest.of(pageNo, pageSize); // pageSize default value = 2 for easier test
 		
 		if(id != null)
 		{
 			List<Conversion> list = new ArrayList<Conversion>();
-			Optional<Conversion> optional = repository.findById(id);
-			list.add(optional.get());
+			Conversion optional = repository.findByTransactionId(id);
+			list.add(optional);
 			
 			return list;
 		}
 		
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date dateCurrent;
-		dateCurrent = formatter.parse(date);
 		try {
 			dateCurrent = formatter.parse(date);
 		} catch(Exception e)
