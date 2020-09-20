@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Rate {
 	
-	@JsonAlias({"GBP", "USD", "EUR", "BGN"}) // should be all currencies
+	@JsonAlias({"GBP", "USD", "EUR", "BGN", "JPY", "AUD", "CAD", "TRY", "CZK"}) // should be all currencies
 	private double rate;
 
-	@JsonAlias({"GBP", "USD", "EUR", "BGN"})
+	@JsonAlias({"GBP", "USD", "EUR", "BGN", "JPY", "AUD", "CAD", "TRY", "CZK"})
 	public double getRate() {
 		return rate;
 	}
 
-	@JsonAlias({"GBP", "USD", "EUR", "BGN"})
+	@JsonAlias({"GBP", "USD", "EUR", "BGN", "JPY", "AUD", "CAD", "TRY", "CZK"})
 	public void setRate(double rate) {
 		this.rate = rate;
 	}

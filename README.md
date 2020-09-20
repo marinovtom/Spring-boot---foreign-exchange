@@ -1,1 +1,4 @@
-# Spring-boot---foreign-exchange
+# Foreign exchange
+
+Documentation available at:
+/documentation
