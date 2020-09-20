@@ -73,7 +73,7 @@ public class ExchangeController {
 	{
 		if(amount == null && base == null && exchangeString == null)
 		{
-			throw new ApiRequestException("/exchange must have 3 parameters (amount, base, exchangeString)!");
+			throw new ApiRequestException("/exchange/convert must have 3 parameters (amount, base, exchangeString)!");
 		}
 		if(amount == null)
 		{

@@ -29,11 +29,16 @@ public class ListController {
 	{
 		Pageable pageWithTwoElements = PageRequest.of(pageNo, pageSize); // pageSize default value = 2 for easier test
 		
+		if(id == null && date == null)
+		{
+			throw new ApiRequestException("/exchange/list must have one of two parameters (id or date)!");
+		}
+		
 		if(id != null)
 		{
 			List<Conversion> list = new ArrayList<Conversion>();
-			Conversion optional = repository.findByTransactionId(id);
-			list.add(optional);
+			Conversion conversion = repository.findByTransactionId(id);
+			list.add(conversion);
 			
 			return list;
 		}

@@ -44,6 +44,13 @@ public class ListControllerTest {
 	}
 	
 	@Test
+	public void requiredParams() throws Exception
+	{
+		this.mockMvc.perform(get("/exchange/list")).andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("/exchange/list must have one of two parameters (id or date)!")));
+	}
+	
+	@Test
 	public void dateFormat() throws Exception
 	{
 		this.mockMvc.perform(get("/exchange/list?date=1.1.2020")).andExpect(status().isBadRequest())

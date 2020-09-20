@@ -65,4 +65,20 @@ public class ExchangeControllerTest {
 		this.mockMvc.perform(get("/exchange?exchangeString=USD")).andExpect(status().isBadRequest())
 		.andExpect(content().string(containsString("Parameter base cannot be empty!")));
 	}
+	
+	@Test
+	public void convertParams() throws Exception
+	{
+		this.mockMvc.perform(get("/exchange/convert")).andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("(amount, base, exchangeString)!")));
+		
+		this.mockMvc.perform(get("/exchange/convert?base=USD")).andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Parameter amount cannot be empty!")));
+		
+		this.mockMvc.perform(get("/exchange/convert?amount=100")).andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Parameter base cannot be empty!")));
+		
+		this.mockMvc.perform(get("/exchange/convert?amount=100&base=USD")).andExpect(status().isBadRequest())
+		.andExpect(content().string(containsString("Parameter exchangeString cannot be empty!")));
+	}
 }
